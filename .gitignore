@@ -1,0 +1,6 @@
+.DS_Store
+.idea
+*.iml
+classes
+target
+sketch.db
