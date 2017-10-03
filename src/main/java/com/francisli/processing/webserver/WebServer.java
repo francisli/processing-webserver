@@ -5,7 +5,7 @@ import processing.core.PApplet;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import static spark.Spark.*;
+import spark.Spark;
 
 public class WebServer {
   protected static class RouteHandlerParams {
@@ -33,11 +33,11 @@ public class WebServer {
 
   public WebServer(PApplet parent, int port) {
     this(parent);
-    port(port);
+    Spark.port(port);
   }
 
-  public void GET(String path, final RouteHandler handler) {
-    get(path, new Route() {
+  protected Route createRoute(final RouteHandler handler) {
+    return new Route() {
       public Object handle(Request req, Response res) {
         handler.background(req, res);
         RouteHandlerParams params = new RouteHandlerParams(handler, req, res);
@@ -51,11 +51,15 @@ public class WebServer {
         }
         return res.body();
       }
-    });
+    };
   }
 
-  public void POST(String path, RouteHandler handler) {
+  public void GET(String path, final RouteHandler handler) {
+    Spark.get(path, createRoute(handler));
+  }
 
+  public void POST(String path, final RouteHandler handler) {
+    Spark.post(path, createRoute(handler));
   }
 
   public void pre() {
@@ -82,6 +86,6 @@ public class WebServer {
   }
 
   public void dispose() {
-    stop();
+    Spark.stop();
   }
 }
