@@ -62,6 +62,26 @@ public class WebServer {
     Spark.post(path, createRoute(handler));
   }
 
+  public void PUT(String path, final RouteHandler handler) {
+    Spark.put(path, createRoute(handler));
+  }
+
+  public void PATCH(String path, final RouteHandler handler) {
+    Spark.patch(path, createRoute(handler));
+  }
+
+  public void DELETE(String path, final RouteHandler handler) {
+    Spark.delete(path, createRoute(handler));
+  }
+
+  public void HEAD(String path, final RouteHandler handler) {
+    Spark.head(path, createRoute(handler));
+  }
+
+  public void OPTIONS(String path, final RouteHandler handler) {
+    Spark.options(path, createRoute(handler));
+  }
+
   public void pre() {
     synchronized(this) {
       activeHandlers = (ArrayList<RouteHandlerParams>) handlers.clone();
